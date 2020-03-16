@@ -1,5 +1,42 @@
-$color: tomato;
+@import "../node_modules/normalize-scss/sass/normalize/import-now";
+
+$color: white;
 
 body {
     background: $color;
+}
+
+h1 {
+    margin: 10px 0;
+}
+
+#container {
+    width: 60%;
+    margin: 40px auto;
+}
+
+header {
+    background-color: #ccc;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+article {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+}
+
+article+article {
+    border-top: 1px solid #ccc;
+}
+
+article>div {
+    flex-basis: 100%;
+}
+
+article button {
+    flex-shrink: 0;
+    padding: 3px 2px;
+    margin-left: 10px;
 }
