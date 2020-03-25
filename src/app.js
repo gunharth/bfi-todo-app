@@ -1,29 +1,41 @@
+window.$ = window.jQuery = require("jquery");
+
 let articles = getLocalStorage();
-let main = document.querySelector("main");
-let eingabe = document.getElementById("todo-input");
-let einfuegen = document.querySelector("#todo-add");
+// let main = document.querySelector("main");
+let main = $("main");
+// let eingabe = document.getElementById("todo-input");
+let eingabe = $("#todo-input");
+// let einfuegen = document.querySelector("#todo-add");
+let einfuegen = $("#todo-add");
 
 render();
 
-einfuegen.addEventListener("click", function() {
-    let value = eingabe.value;
+// einfuegen.addEventListener("click", function(e) {
+// einfuegen.click(function() {
+einfuegen.on("click", function(e) {
+    e.preventDefault();
+    let value = eingabe.val();
     if(value != "") {
         articles.push(value);
-        eingabe.value = "";
+        // eingabe.value = "";
+        eingabe.val("");
         eingabe.focus();
         setLocalStorage();
         render();
     }
 })
 
-// <article>todo 4</article>
-
 function render() {
-    main.innerHTML = "";
+    // main.innerHTML = "";
+    // main.text("");
+    main.html("");
     for (let i = 0; i < articles.length; i++) {
-        let article = document.createElement("article");
-        article.innerHTML = articles[i];
-        main.appendChild(article);
+        // let article = document.createElement("article");
+        // article.innerHTML = articles[i];
+        //let article = $("<article>" + articles[i] + "</article>");
+        // main.appendChild(article);s
+        //main.append( $("<article>" + articles[i] + "</article>") );
+        main.append( $( `<article> ${articles[i]} </article>` ) );
     }
 }
 
