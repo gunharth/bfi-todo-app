@@ -93,14 +93,39 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-var articles = ["todo 4", "todo 5", "todo 6"];
-var main = document.querySelector("main"); // <article>todo 4</article>
+var articles = getLocalStorage();
+var main = document.querySelector("main");
+var eingabe = document.getElementById("todo-input");
+var einfuegen = document.querySelector("#todo-add");
+render();
+einfuegen.addEventListener("click", function () {
+  var value = eingabe.value;
 
-for (var i = 0; i < articles.length; i++) {
-  var article = document.createElement("article");
-  var txt = document.createTextNode(articles[i]);
-  article.appendChild(txt);
-  main.appendChild(article);
+  if (value != "") {
+    articles.push(value);
+    eingabe.value = "";
+    eingabe.focus();
+    setLocalStorage();
+    render();
+  }
+}); // <article>todo 4</article>
+
+function render() {
+  main.innerHTML = "";
+
+  for (var i = 0; i < articles.length; i++) {
+    var article = document.createElement("article");
+    article.innerHTML = articles[i];
+    main.appendChild(article);
+  }
+}
+
+function getLocalStorage() {
+  return localStorage.getItem("articles") ? JSON.parse(localStorage.getItem("articles")) : [];
+}
+
+function setLocalStorage() {
+  localStorage.setItem("articles", JSON.stringify(articles));
 }
 
 /***/ }),
