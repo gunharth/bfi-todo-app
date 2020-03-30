@@ -93,12 +93,43 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+} // network status online / offline
+
+
+var networkStatus = document.getElementById("networkStatus");
+window.addEventListener("load", function () {
+  function handleNetworkChange(event) {
+    if (navigator.onLine) {
+      networkStatus.classList.remove("offline");
+    } else {
+      networkStatus.classList.add("offline");
+    }
+  }
+
+  window.addEventListener("online", handleNetworkChange);
+  window.addEventListener("offline", handleNetworkChange);
+}); // app
+
 var articles = getLocalStorage();
 var main = document.querySelector("main");
 var eingabe = document.getElementById("todo-input");
 var einfuegen = document.querySelector("#todo-add");
 render();
-einfuegen.addEventListener("click", function () {
+document.addEventListener("keyup", function (e) {
+  e.preventDefault();
+
+  if (e.keyCode === 13) {
+    addTodo();
+  }
+});
+einfuegen.addEventListener("click", function (e) {
+  e.preventDefault();
+  addTodo();
+});
+
+function addTodo() {
   var value = eingabe.value;
 
   if (value != "") {
@@ -108,7 +139,8 @@ einfuegen.addEventListener("click", function () {
     setLocalStorage();
     render();
   }
-}); // <article>todo 4</article>
+} // <article>todo 4</article>
+
 
 function render() {
   main.innerHTML = "";

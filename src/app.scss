@@ -10,6 +10,15 @@ h1 {
     margin: 10px 0;
 }
 
+#networkStatus {
+    background: red;
+    display: none;
+
+    &.offline {
+        display: block;
+    }
+}
+
 #container {
     width: 60%;
     margin: 40px auto;
