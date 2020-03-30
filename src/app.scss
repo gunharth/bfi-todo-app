@@ -1,4 +1,10 @@
-@import "../node_modules/normalize-scss/sass/normalize/import-now";
+// @import "../node_modules/normalize-scss/sass/normalize/import-now";
+
+
+// my bs variables
+//$h1-font-size: 5rem;
+
+@import "../node_modules/bootstrap/scss/bootstrap";
 
 $color: white;
 

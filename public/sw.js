@@ -1,4 +1,4 @@
-const swCache = 'todo-v2';
+const swCache = 'todo-v3';
 self.addEventListener('install', function (e) {
     e.waitUntil(
         caches.open(swCache)

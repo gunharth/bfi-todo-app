@@ -1,3 +1,7 @@
+window.$ = require("jquery");
+window.Popper = require("popper.js");
+require("bootstrap");
+
 if('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
 }
