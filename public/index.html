@@ -18,13 +18,18 @@
 </head>
 <body>
     <div id="container">
-        <div id="networkStatus">Kein Internet!!!</div>
         <header>
+        <div id="networkStatus">Kein Internet!!!</div>
             <h1>Todo Liste</h1>
             <input type="text" id="todo-input"> <button id="todo-add">Einfügen</button>
         </header>
 
         <main>
+            <article>
+                <div>Todo Title</div>
+                <button data-index="0" data-action="edit">Editieren</button>
+                <button data-index="0" data-action="delete">Löschen</button>
+            </article>
         </main>
     </div>
 

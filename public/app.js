@@ -110,12 +110,14 @@ window.addEventListener("load", function () {
 
   window.addEventListener("online", handleNetworkChange);
   window.addEventListener("offline", handleNetworkChange);
-}); // app
+}); // start the app ...
 
-var articles = getLocalStorage();
+var model = getLocalStorage(); // todo list
+
 var main = document.querySelector("main");
 var eingabe = document.getElementById("todo-input");
 var einfuegen = document.querySelector("#todo-add");
+var edit = -1;
 render();
 document.addEventListener("keyup", function (e) {
   e.preventDefault();
@@ -128,36 +130,91 @@ einfuegen.addEventListener("click", function (e) {
   e.preventDefault();
   addTodo();
 });
+main.addEventListener("click", function (e) {
+  e.preventDefault();
+  action(e);
+});
+
+function action(e) {
+  var index = e.target.dataset.index;
+  var action = e.target.dataset.action;
+
+  if (!index) {
+    return;
+  }
+
+  if (action === 'delete') {
+    removeTodo(index);
+  } else if (action === 'edit') {
+    edit = index;
+    render();
+  } else {
+    var input = document.querySelector("main input").value;
+    model[edit] = input;
+    setLocalStorage();
+    edit = -1;
+    render();
+  }
+}
 
 function addTodo() {
   var value = eingabe.value;
 
   if (value != "") {
-    articles.push(value);
+    model.push(value);
     eingabe.value = "";
     eingabe.focus();
     setLocalStorage();
     render();
   }
+}
+
+function removeTodo(index) {
+  model.splice(index, 1);
+  setLocalStorage();
+  render();
 } // <article>todo 4</article>
 
 
 function render() {
   main.innerHTML = "";
 
-  for (var i = 0; i < articles.length; i++) {
+  for (var i = 0; i < model.length; i++) {
     var article = document.createElement("article");
-    article.innerHTML = articles[i];
+    var text = document.createElement('div');
+    var button1 = document.createElement('button');
+    button1.dataset.index = i;
+
+    if (i == edit) {
+      var _edit = document.createElement('input');
+
+      _edit.value = model[i];
+      text.appendChild(_edit);
+      button1.innerHTML = 'Speichern';
+      button1.dataset.action = 'save';
+    } else {
+      text.innerHTML = model[i];
+      button1.innerHTML = 'Editieren';
+      button1.dataset.action = 'edit';
+    }
+
+    var button2 = document.createElement('button');
+    button2.innerHTML = 'Löschen';
+    button2.dataset.index = i;
+    button2.dataset.action = 'delete';
+    article.appendChild(text);
+    article.appendChild(button1);
+    article.appendChild(button2);
     main.appendChild(article);
   }
 }
 
 function getLocalStorage() {
-  return localStorage.getItem("articles") ? JSON.parse(localStorage.getItem("articles")) : [];
+  return localStorage.getItem("model") ? JSON.parse(localStorage.getItem("model")) : [];
 }
 
 function setLocalStorage() {
-  localStorage.setItem("articles", JSON.stringify(articles));
+  localStorage.setItem("model", JSON.stringify(model));
 }
 
 /***/ }),
