@@ -90,132 +90,18 @@
 /*!********************!*\
   !*** ./src/app.js ***!
   \********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _controller__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controller */ "./src/controller.js");
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
-} // network status online / offline
-
-
-var networkStatus = document.getElementById("networkStatus");
-window.addEventListener("load", function () {
-  function handleNetworkChange(event) {
-    if (navigator.onLine) {
-      networkStatus.classList.remove("offline");
-    } else {
-      networkStatus.classList.add("offline");
-    }
-  }
-
-  window.addEventListener("online", handleNetworkChange);
-  window.addEventListener("offline", handleNetworkChange);
-}); // start the app ...
-
-var model = getLocalStorage(); // todo list
-
-var main = document.querySelector("main");
-var eingabe = document.getElementById("todo-input");
-var einfuegen = document.querySelector("#todo-add");
-var edit = -1;
-render();
-document.addEventListener("keyup", function (e) {
-  e.preventDefault();
-
-  if (e.keyCode === 13) {
-    addTodo();
-  }
-});
-einfuegen.addEventListener("click", function (e) {
-  e.preventDefault();
-  addTodo();
-});
-main.addEventListener("click", function (e) {
-  e.preventDefault();
-  action(e);
-});
-
-function action(e) {
-  var index = e.target.dataset.index;
-  var action = e.target.dataset.action;
-
-  if (!index) {
-    return;
-  }
-
-  if (action === 'delete') {
-    removeTodo(index);
-  } else if (action === 'edit') {
-    edit = index;
-    render();
-  } else {
-    var input = document.querySelector("main input").value;
-    model[edit] = input;
-    setLocalStorage();
-    edit = -1;
-    render();
-  }
 }
 
-function addTodo() {
-  var value = eingabe.value;
 
-  if (value != "") {
-    model.push(value);
-    eingabe.value = "";
-    eingabe.focus();
-    setLocalStorage();
-    render();
-  }
-}
-
-function removeTodo(index) {
-  model.splice(index, 1);
-  setLocalStorage();
-  render();
-} // <article>todo 4</article>
-
-
-function render() {
-  main.innerHTML = "";
-
-  for (var i = 0; i < model.length; i++) {
-    var article = document.createElement("article");
-    var text = document.createElement('div');
-    var button1 = document.createElement('button');
-    button1.dataset.index = i;
-
-    if (i == edit) {
-      var _edit = document.createElement('input');
-
-      _edit.value = model[i];
-      text.appendChild(_edit);
-      button1.innerHTML = 'Speichern';
-      button1.dataset.action = 'save';
-    } else {
-      text.innerHTML = model[i];
-      button1.innerHTML = 'Editieren';
-      button1.dataset.action = 'edit';
-    }
-
-    var button2 = document.createElement('button');
-    button2.innerHTML = 'Löschen';
-    button2.dataset.index = i;
-    button2.dataset.action = 'delete';
-    article.appendChild(text);
-    article.appendChild(button1);
-    article.appendChild(button2);
-    main.appendChild(article);
-  }
-}
-
-function getLocalStorage() {
-  return localStorage.getItem("model") ? JSON.parse(localStorage.getItem("model")) : [];
-}
-
-function setLocalStorage() {
-  localStorage.setItem("model", JSON.stringify(model));
-}
+var controller = new _controller__WEBPACK_IMPORTED_MODULE_0__["Controller"]();
 
 /***/ }),
 
@@ -227,6 +113,161 @@ function setLocalStorage() {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./src/controller.js":
+/*!***************************!*\
+  !*** ./src/controller.js ***!
+  \***************************/
+/*! exports provided: Controller */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Controller", function() { return Controller; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+/* structure
+<main>
+    <article>
+        <div>Brot</div>
+        <button data-index="0" data-action="edit">Editieren</button>
+        <button data-index="0" data-action="delete">Löschen</button>
+    </article>
+</main>
+*/
+var Controller = /*#__PURE__*/function () {
+  function Controller() {
+    var _this = this;
+
+    _classCallCheck(this, Controller);
+
+    this.model = this.getLocalStorage();
+    this.edit = -1; // add Todos
+
+    this.eingabe = document.getElementById("todo-input");
+    this.einfuegen = document.querySelector("#todo-add");
+    this.einfuegen.addEventListener("click", function () {
+      return _this.addTodo();
+    }); // edit Todos
+
+    this.main = document.querySelector("main");
+    this.main.addEventListener("click", function (e) {
+      return _this.action(e);
+    }); // load todos in local storage
+
+    this.render(); // Execute a function when the user releases a key on the keyboard
+
+    document.addEventListener("keyup", function (event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+        // Cancel the default action, if needed
+        event.preventDefault(); // Trigger the button element with a click
+
+        _this.einfuegen.click();
+      }
+    });
+  } // edit, save and delete Todos
+
+
+  _createClass(Controller, [{
+    key: "action",
+    value: function action(e) {
+      var source = e.target;
+
+      if (source.dataset.action == "delete") {
+        this.removeTodo(source.dataset.index);
+      } else if (source.dataset.action == "edit") {
+        this.edit = source.dataset.index;
+        this.render();
+      } else if (source.dataset.action == "save") {
+        var input = document.querySelector("main input").value;
+        this.model[this.edit] = input;
+        this.setLocalStorage();
+        this.edit = -1;
+        this.render();
+      }
+    } // remove Todo
+
+  }, {
+    key: "removeTodo",
+    value: function removeTodo(index) {
+      this.model.splice(index, 1);
+      this.setLocalStorage();
+      this.render();
+    } // add Todo
+
+  }, {
+    key: "addTodo",
+    value: function addTodo() {
+      var value = this.eingabe.value;
+
+      if (value != "") {
+        this.model.push(value);
+        this.eingabe.value = "";
+        this.setLocalStorage();
+        this.render();
+      }
+    } // get todos from local Storage
+
+  }, {
+    key: "getLocalStorage",
+    value: function getLocalStorage() {
+      // aussage (ja/nein) ? ja tu was : nein tu was;
+      return localStorage.getItem("modelStorage") ? JSON.parse(localStorage.getItem("modelStorage")) : []; // if (localStorage.getItem('modelStorage')) {
+      //     return JSON.parse(localStorage.getItem('modelStorage'));
+      // }
+      // return [];
+    } // save Todos to local Storage
+
+  }, {
+    key: "setLocalStorage",
+    value: function setLocalStorage() {
+      localStorage.setItem("modelStorage", JSON.stringify(this.model));
+    } // loop through todos and display on page
+
+  }, {
+    key: "render",
+    value: function render() {
+      this.main.innerHTML = "";
+
+      for (var i = 0; i < this.model.length; i++) {
+        var article = document.createElement("article");
+        var text = document.createElement("div");
+        var button1 = document.createElement("button");
+        button1.dataset.index = i;
+
+        if (i == this.edit) {
+          var edit = document.createElement("input");
+          edit.value = this.model[i];
+          text.appendChild(edit);
+          button1.innerHTML = "Speichern";
+          button1.dataset.action = "save";
+        } else {
+          text.innerHTML = this.model[i];
+          button1.innerHTML = "Editieren";
+          button1.dataset.action = "edit";
+        }
+
+        var button2 = document.createElement("button");
+        button2.innerHTML = "Löschen";
+        button2.dataset.index = i;
+        button2.dataset.action = "delete";
+        article.appendChild(text);
+        article.appendChild(button1);
+        article.appendChild(button2);
+        this.main.appendChild(article);
+      }
+    }
+  }]);
+
+  return Controller;
+}();
 
 /***/ }),
 
