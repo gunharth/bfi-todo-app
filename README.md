@@ -16,3 +16,5 @@ Teilweise umgesetzt. Aufgabe: baue alle CRUD Funktionen in diese Version ein.
 js-class branch: https://github.com/gunharth/bfi-todo-app/tree/js-class  
 Beispiel eines JavaSript Modules basierend auf ECMA Script 6 (ES6) zur Kapselung der Funktionaliät. Benutzt export, include, arrow functions, ... und lagert alle Funktionen in einen eigenen controller aus.  
 Vollständiges Programm.   
+
+der Ordner svelte-todo enthält ein Startprojekt für Svelte mit Firebase/Firestore
