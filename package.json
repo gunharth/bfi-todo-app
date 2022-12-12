@@ -23,7 +23,7 @@
   "author": "Guni",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "browser-sync": "^2.26.3",
